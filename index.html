@@ -253,22 +253,28 @@
       </div>
     </section>
 
-    <!-- 13 審議表決 [INTERACT:poll] -->
+    <!-- 13 審議表決（Google Meet 表情符號表決） -->
     <section id="slide-poll" data-background-color="#11161d">
-      <h2>🗳️ 提案審議表決 <span class="live-badge">LIVE</span></h2>
-      <p style="font-size:0.44em;color:#bbb;margin-bottom:0.5em;">安心午餐券補助案 —— 委員請以手機掃描 QR Code，或在本畫面直接點選：</p>
-      <div style="display:grid; grid-template-columns:1fr 200px; gap:24px; align-items:center;">
-        <div>
-          <div id="poll-options" style="display:flex; flex-direction:column; gap:12px;"></div>
-          <div style="font-size:0.4em; color:#666; margin-top:0.8em;">已投票：<span id="poll-total">0</span> 人</div>
+      <h2>🗳️ 提案審議表決</h2>
+      <p style="font-size:0.44em;color:#bbb;margin-bottom:0.8em;">安心午餐券補助案 —— 請委員於 <b style="color:var(--accent2)">Google Meet</b> 點選對應的<b style="color:var(--accent2)">表情符號</b>表決：</p>
+      <div class="ov-grid">
+        <div class="ov-card" style="border-top-color:var(--success);">
+          <div class="ov-emoji">👍</div>
+          <div class="ov-title" style="color:var(--success);">照案通過</div>
+          <div class="ov-desc">同意本補助案內容</div>
         </div>
-        <div style="text-align:center;">
-          <div style="background:#fff; padding:12px; border-radius:12px; display:inline-block;">
-            <img src="images/poll-qr.png" alt="投票 QR Code" style="width:160px; height:160px; display:block;">
-          </div>
-          <div style="font-size:0.34em; color:var(--accent2); margin-top:10px; font-weight:700;">📱 掃描即可投票</div>
+        <div class="ov-card" style="border-top-color:var(--warn);">
+          <div class="ov-emoji">✋</div>
+          <div class="ov-title" style="color:var(--warn);">修正後通過</div>
+          <div class="ov-desc">原則同意，惟需修正</div>
+        </div>
+        <div class="ov-card" style="border-top-color:#e57373;">
+          <div class="ov-emoji">👎</div>
+          <div class="ov-title" style="color:#e57373;">不通過</div>
+          <div class="ov-desc">不同意本補助案</div>
         </div>
       </div>
+      <p style="font-size:0.36em;color:#777;text-align:center;margin-top:1.2em;">表決結果請記錄於下一頁「決議」欄</p>
     </section>
 
     <!-- 14 散會 -->
@@ -297,99 +303,6 @@
     controls: true,
     slideNumber: 'c/t',
     plugins: []
-  });
-</script>
-
-<!-- 投票 Firebase -->
-<script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
-  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp }
-    from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyAYQhNavPSce17XtvDC5xnXyl9iUhW9KjA",
-    authDomain: "teacherstudy-109ef.firebaseapp.com",
-    projectId: "teacherstudy-109ef",
-    storageBucket: "teacherstudy-109ef.firebasestorage.app",
-    messagingSenderId: "196599230156",
-    appId: "1:196599230156:web:cfe55d364df3ae1b9d5c69"
-  };
-  const app = initializeApp(firebaseConfig);
-  const fdb = getFirestore(app);
-
-  const OPTIONS = [
-    { id: 'pass',   label: '✅ 照案通過' },
-    { id: 'amend',  label: '📝 修正後通過' },
-    { id: 'reject', label: '❌ 不通過' },
-  ];
-  // 借用規則允許的 *_wordcloud 集合當投票儲存空間（每票一筆 create）
-  const pollRef = collection(fdb, 'lunch1142_poll_wordcloud');
-
-  const userId = 'user_' + Math.random().toString(36).slice(2, 9);
-  let myVote = null;
-
-  const container = document.getElementById('poll-options');
-  OPTIONS.forEach(opt => {
-    const btn = document.createElement('button');
-    btn.id = `poll-btn-${opt.id}`;
-    btn.innerHTML = `
-      <div style="display:flex;align-items:center;gap:12px;">
-        <span style="flex:0 0 24px;height:24px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);
-                     display:flex;align-items:center;justify-content:center;font-size:12px;"
-              id="poll-check-${opt.id}"></span>
-        <span style="flex:1;text-align:left;">${opt.label}</span>
-        <span style="flex:0 0 140px;height:8px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
-          <div id="poll-bar-${opt.id}" style="height:100%;width:0;background:var(--accent2);border-radius:4px;transition:width 0.4s;"></div>
-        </span>
-        <span id="poll-pct-${opt.id}" style="flex:0 0 40px;text-align:right;font-size:0.8em;color:#888;">0%</span>
-      </div>`;
-    btn.style.cssText = `width:100%;padding:13px 16px;background:rgba(255,255,255,0.06);
-      border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:#fff;
-      font-size:0.5em;cursor:pointer;font-family:inherit;text-align:left;`;
-    btn.onclick = () => vote(opt.id);
-    container.appendChild(btn);
-  });
-
-  async function vote(optId) {
-    myVote = optId;
-    // 立即視覺回饋（不等網路）
-    OPTIONS.forEach(opt => {
-      const check = document.getElementById(`poll-check-${opt.id}`);
-      const isMe = (opt.id === optId);
-      check.textContent = isMe ? '✓' : '';
-      check.style.background = isMe ? 'var(--accent2)' : 'transparent';
-      check.style.borderColor = isMe ? 'var(--accent2)' : 'rgba(255,255,255,0.3)';
-    });
-    try {
-      // 每票新增一筆（含 userId，可在讀取端去重）
-      await addDoc(pollRef, { userId, option: optId, word: optId, created_at: serverTimestamp() });
-    } catch (e) {
-      console.error('vote failed', e);
-      alert('投票送出失敗：' + (e?.message || e) + '\n請確認網路連線後再試。');
-    }
-  }
-
-  onSnapshot(query(pollRef, orderBy('created_at', 'asc')), snap => {
-    // 依 userId 取「最新一票」，改票不會重複計
-    const latest = {};
-    snap.forEach(d => { const v = d.data(); if (v.userId) latest[v.userId] = v.option; });
-    const counts = {};
-    OPTIONS.forEach(o => counts[o.id] = 0);
-    Object.values(latest).forEach(v => { if (counts[v] !== undefined) counts[v]++; });
-    const total = Object.values(counts).reduce((a, b) => a + b, 0);
-
-    document.getElementById('poll-total').textContent = total;
-    OPTIONS.forEach(opt => {
-      const pct = total > 0 ? Math.round((counts[opt.id] / total) * 100) : 0;
-      document.getElementById(`poll-bar-${opt.id}`).style.width = pct + '%';
-      document.getElementById(`poll-pct-${opt.id}`).textContent = pct + '%';
-      const check = document.getElementById(`poll-check-${opt.id}`);
-      if (myVote === opt.id) {
-        check.textContent = '✓';
-        check.style.background = 'var(--accent2)';
-        check.style.borderColor = 'var(--accent2)';
-      }
-    });
   });
 </script>
 

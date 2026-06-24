@@ -322,8 +322,8 @@
     { id: 'amend',  label: '📝 修正後通過' },
     { id: 'reject', label: '❌ 不通過' },
   ];
-  // 改用「集合 + 每票一筆」寫法（資料庫只允許 create，不允許 update）
-  const pollRef = collection(fdb, 'lunch1142_poll');
+  // 借用規則允許的 *_wordcloud 集合當投票儲存空間（每票一筆 create）
+  const pollRef = collection(fdb, 'lunch1142_poll_wordcloud');
 
   const userId = 'user_' + Math.random().toString(36).slice(2, 9);
   let myVote = null;
@@ -362,7 +362,7 @@
     });
     try {
       // 每票新增一筆（含 userId，可在讀取端去重）
-      await addDoc(pollRef, { userId, option: optId, created_at: serverTimestamp() });
+      await addDoc(pollRef, { userId, option: optId, word: optId, created_at: serverTimestamp() });
     } catch (e) {
       console.error('vote failed', e);
       alert('投票送出失敗：' + (e?.message || e) + '\n請確認網路連線後再試。');

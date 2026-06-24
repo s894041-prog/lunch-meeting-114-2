@@ -303,7 +303,7 @@
 <!-- 投票 Firebase -->
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
-  import { getFirestore, doc, setDoc, onSnapshot, serverTimestamp }
+  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp }
     from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
 
   const firebaseConfig = {
@@ -322,7 +322,8 @@
     { id: 'amend',  label: '📝 修正後通過' },
     { id: 'reject', label: '❌ 不通過' },
   ];
-  const pollRef = doc(fdb, 'lunch1142_poll', 'results');
+  // 改用「集合 + 每票一筆」寫法（資料庫只允許 create，不允許 update）
+  const pollRef = collection(fdb, 'lunch1142_poll');
 
   const userId = 'user_' + Math.random().toString(36).slice(2, 9);
   let myVote = null;
@@ -360,20 +361,21 @@
       check.style.borderColor = isMe ? 'var(--accent2)' : 'rgba(255,255,255,0.3)';
     });
     try {
-      // 用真正的巢狀物件，merge:true 會深層合併 votes map（不會覆蓋他人）
-      await setDoc(pollRef, { votes: { [userId]: optId }, updated_at: serverTimestamp() }, { merge: true });
+      // 每票新增一筆（含 userId，可在讀取端去重）
+      await addDoc(pollRef, { userId, option: optId, created_at: serverTimestamp() });
     } catch (e) {
       console.error('vote failed', e);
       alert('投票送出失敗：' + (e?.message || e) + '\n請確認網路連線後再試。');
     }
   }
 
-  onSnapshot(pollRef, snap => {
-    const data = snap.data() || {};
-    const votes = data.votes || {};
+  onSnapshot(query(pollRef, orderBy('created_at', 'asc')), snap => {
+    // 依 userId 取「最新一票」，改票不會重複計
+    const latest = {};
+    snap.forEach(d => { const v = d.data(); if (v.userId) latest[v.userId] = v.option; });
     const counts = {};
     OPTIONS.forEach(o => counts[o.id] = 0);
-    Object.values(votes).forEach(v => { if (counts[v] !== undefined) counts[v]++; });
+    Object.values(latest).forEach(v => { if (counts[v] !== undefined) counts[v]++; });
     const total = Object.values(counts).reduce((a, b) => a + b, 0);
 
     document.getElementById('poll-total').textContent = total;

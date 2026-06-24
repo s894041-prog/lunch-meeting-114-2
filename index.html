@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>114學年度第二學期期末午餐供應推行委員會會議</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/night.css" />
+  <style>
+    :root {
+      --accent:  #e8643a;
+      --accent2: #4fc3f7;
+      --success: #81c784;
+      --warn:    #ffb74d;
+    }
+    .reveal { font-family: 'Segoe UI', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; }
+    .reveal h1, .reveal h2, .reveal h3 {
+      font-family: 'Segoe UI', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+      font-weight: 700; letter-spacing: -0.01em;
+    }
+    .reveal h1 { font-size: 1.9em; }
+    .reveal h2 { font-size: 1.35em; color: var(--accent2); margin-bottom: 0.5em; }
+    .reveal .progress { color: var(--accent); }
+    .reveal .fragment { opacity: 0.2; }
+    .reveal .fragment.visible { opacity: 1; }
+    .reveal section { text-align: left; }
+
+    /* 封面 */
+    .title-slide { text-align: center; }
+    .title-slide .tag {
+      display: inline-block; background: var(--accent); color: #fff;
+      padding: 5px 16px; border-radius: 20px; font-size: 0.5em;
+      letter-spacing: 0.08em; margin-bottom: 1em; font-weight: 600;
+    }
+    .title-slide .subtitle { font-size: 0.7em; color: #aaa; margin-top: 0.6em; }
+    .title-slide .author { margin-top: 1.6em; font-size: 0.46em; color: #888; line-height: 1.8; }
+
+    /* 資訊列 */
+    .info-list { list-style: none; padding: 0; margin: 0.4em 0; font-size: 0.6em; }
+    .info-list li { padding: 12px 18px; margin-bottom: 10px; border-radius: 10px;
+      background: rgba(255,255,255,0.05); border-left: 4px solid var(--accent2); }
+    .info-list li b { color: var(--accent2); margin-right: 10px; }
+
+    /* 三欄概覽卡 */
+    .ov-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 0.6em; }
+    .ov-card { background: rgba(255,255,255,0.05); border-top: 4px solid var(--accent);
+      border-radius: 10px; padding: 22px 16px; text-align: center; }
+    .ov-card .ov-emoji { font-size: 2.2em; }
+    .ov-card .ov-title { font-size: 0.5em; font-weight: 700; color: var(--accent); margin: 10px 0 8px; }
+    .ov-card .ov-desc { font-size: 0.38em; color: #bbb; line-height: 1.6; }
+
+    /* 一般條列 */
+    .bullets { font-size: 0.52em; line-height: 1.9; }
+    .bullets li { margin-bottom: 8px; }
+    .bullets b { color: var(--warn); }
+
+    /* 數字卡 */
+    .stat-row { display: flex; gap: 16px; justify-content: center; margin: 0.7em 0; }
+    .stat-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px; padding: 18px 20px; text-align: center; flex: 1; }
+    .stat-card .num { font-size: 1.7em; font-weight: 800; color: var(--accent); line-height: 1; }
+    .stat-card .label { font-size: 0.38em; color: #ccc; margin-top: 8px; }
+
+    /* 補助標準表 */
+    .rate-table { width: 100%; border-collapse: collapse; font-size: 0.5em; margin-top: 0.4em; }
+    .rate-table th, .rate-table td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .rate-table th { color: var(--accent2); text-align: left; background: rgba(79,195,247,0.08); }
+    .rate-table td.amt { color: var(--accent); font-weight: 800; text-align: right; }
+
+    /* 時間軸 */
+    .timeline { position: relative; padding-left: 36px; margin-top: 0.6em; }
+    .timeline::before { content: ''; position: absolute; left: 14px; top: 4px; bottom: 4px;
+      width: 2px; background: rgba(255,255,255,0.2); }
+    .timeline-item { position: relative; margin-bottom: 16px; font-size: 0.5em; }
+    .timeline-item::before { content: ''; position: absolute; left: -28px; top: 4px;
+      width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid #1a1a2e; }
+    .timeline-item .ti-date { color: var(--accent); font-weight: 700; }
+    .timeline-item .ti-text { color: #ccc; }
+
+    /* 五大把關 */
+    .guard-row { display: flex; gap: 12px; justify-content: center; margin-top: 0.8em; flex-wrap: wrap; }
+    .guard-chip { background: rgba(129,199,132,0.12); border: 1px solid rgba(129,199,132,0.4);
+      border-radius: 30px; padding: 14px 22px; font-size: 0.46em; text-align: center; }
+    .guard-chip .g-emoji { font-size: 1.5em; display: block; margin-bottom: 6px; }
+
+    /* 提案卡 */
+    .case-box { background: rgba(255,255,255,0.05); border-left: 4px solid var(--accent);
+      border-radius: 8px; padding: 18px 22px; font-size: 0.46em; line-height: 1.8; color: #ddd; }
+    .case-box .ck { color: var(--accent2); font-weight: 700; }
+
+    .end-slide { text-align: center; }
+    .end-slide .big { font-size: 3em; margin-bottom: 0.1em; }
+    .end-slide .tagline { font-size: 0.6em; color: #aaa; }
+    .sign-row { display: flex; justify-content: space-around; margin-top: 2em; font-size: 0.5em; color: #999; }
+
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .live-badge { display: inline-block; background: #ff4757; color: #fff; padding: 2px 8px;
+      border-radius: 10px; font-size: 0.55em; vertical-align: middle; animation: pulse 1.5s infinite; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+
+    <!-- 1 封面 -->
+    <section data-background-color="#0d1117">
+      <div class="title-slide">
+        <div class="tag">臺中市外埔區馬鳴國民小學 · 115/6/26</div>
+        <h1>114 學年度第二學期</h1>
+        <h2 style="color:var(--accent); margin-top:0.2em;">期末午餐供應推行委員會會議</h2>
+        <p class="subtitle">線上會議　主席：王俊華校長</p>
+        <p class="author">🍱 健康營養 · 在地食材 · 食安把關</p>
+      </div>
+    </section>
+
+    <!-- 2 會議資訊 -->
+    <section data-background-color="#0d1117">
+      <h2>📋 會議資訊</h2>
+      <ul class="info-list">
+        <li><b>開會日期</b>115 年 6 月 26 日（三）上午 10:15</li>
+        <li><b>開會地點</b>線上會議</li>
+        <li><b>主　　席</b>王俊華校長</li>
+        <li><b>與會人員</b>詳簽到表</li>
+      </ul>
+    </section>
+
+    <!-- 3 報告事項總覽 -->
+    <section data-background-color="#0d1117">
+      <h2>五、報告事項總覽</h2>
+      <div class="ov-grid">
+        <div class="ov-card fragment">
+          <div class="ov-emoji">📑</div>
+          <div class="ov-title">（一）計畫案</div>
+          <div class="ov-desc">偏鄉中央廚房、62 元精進方案、午餐補助與安心餐券、有鈣讚計畫</div>
+        </div>
+        <div class="ov-card fragment">
+          <div class="ov-emoji">🧼</div>
+          <div class="ov-title">（二）暑假廚房清消</div>
+          <div class="ov-desc">鍋爐保養、水塔清洗、廚房消毒與大掃除時程</div>
+        </div>
+        <div class="ov-card fragment">
+          <div class="ov-emoji">🍱</div>
+          <div class="ov-title">（三）免費午餐宣導</div>
+          <div class="ov-desc">115 學年度起公立國中小免費營養午餐政策說明</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 計畫案① -->
+    <section data-background-color="#0d1117">
+      <h2>（一）計畫案 ①</h2>
+      <ul class="bullets">
+        <li><b>推動偏鄉學校中央廚房計畫</b>：目前持續執行。</li>
+        <li><b>行政院「偏鄉學校精進午餐 62 元方案」</b>：依契約內容執行<br>
+          <span style="font-size:0.85em;color:#aaa;">　每週 1 份保久豆漿、點心、保久乳</span></li>
+      </ul>
+    </section>
+
+    <!-- 5 計畫案② 補助與餐券 -->
+    <section data-background-color="#0d1117">
+      <h2>（一）計畫案 ② 午餐補助與安心餐券</h2>
+      <div class="stat-row fragment">
+        <div class="stat-card"><div class="num">12<span style="font-size:0.5em">人</span></div><div class="label">馬鳴 · 午餐費補助</div></div>
+        <div class="stat-card"><div class="num">12<span style="font-size:0.5em">人</span></div><div class="label">鐵山 · 午餐費補助</div></div>
+        <div class="stat-card"><div class="num">7<span style="font-size:0.5em">人</span></div><div class="label">馬鳴 · 安心餐券</div></div>
+        <div class="stat-card"><div class="num">7<span style="font-size:0.5em">人</span></div><div class="label">鐵山 · 安心餐券</div></div>
+      </div>
+      <div class="case-box fragment" style="margin-top:0.6em;">
+        <span class="ck">安心午餐券規範：</span>餐券 <b style="color:var(--accent)">65 元</b>，可兌換至 <b style="color:var(--accent)">74 元</b>餐食商品，超額自付差額。<br>
+        可配合當期促銷方案，<b style="color:var(--warn)">應有主食，不得單一領取飲品</b>。
+      </div>
+    </section>
+
+    <!-- 6 有鈣讚計畫 -->
+    <section data-background-color="#0d1117">
+      <h2>🥛 寶貝咱ㄟ囝仔 — 台中有鈣讚計畫</h2>
+      <ul class="bullets">
+        <li><b>對象</b>：臺中市公立國小及公私立幼兒園學（幼）生</li>
+        <li><b>內容</b>：學期中（不含寒暑假）每週 <b>1 瓶乳品</b></li>
+        <li><b>期程</b>：114-2 學期 115/2/23 起至 7/5</li>
+        <li><b>兌領</b>：國小持數位學生證、幼生持有鈣讚數位卡證，至市府指定通路兌領</li>
+      </ul>
+    </section>
+
+    <!-- 7 暑假廚房清消 -->
+    <section data-background-color="#0d1117">
+      <h2>（二）暑假廚房清消時程</h2>
+      <div class="timeline">
+        <div class="timeline-item fragment"><span class="ti-date">七月</span> <span class="ti-text">— 鍋爐保養</span></div>
+        <div class="timeline-item fragment"><span class="ti-date">8/15</span> <span class="ti-text">— 清洗水塔（全校一起）</span></div>
+        <div class="timeline-item fragment"><span class="ti-date">八月</span> <span class="ti-text">— 廚房消毒（與小黑蚊消毒一起）</span></div>
+        <div class="timeline-item fragment"><span class="ti-date">八月</span> <span class="ti-text">— 廚房大掃除</span></div>
+        <div class="timeline-item fragment"><span class="ti-date">八月</span> <span class="ti-text">— 開學前總整理</span></div>
+      </div>
+    </section>
+
+    <!-- 8 免費午餐宣導：政策目的 -->
+    <section data-background-color="#0d1117">
+      <h2>（三）115 學年度免費午餐 · 政策目的</h2>
+      <div class="ov-grid" style="grid-template-columns:1fr 1fr;">
+        <div class="ov-card fragment"><div class="ov-emoji">💪</div><div class="ov-title">保障營養健康</div><div class="ov-desc">促進學生均衡發展</div></div>
+        <div class="ov-card fragment"><div class="ov-emoji">⚖️</div><div class="ov-title">落實教育平權</div><div class="ov-desc">照顧每位孩子</div></div>
+        <div class="ov-card fragment"><div class="ov-emoji">🏠</div><div class="ov-title">減輕家庭負擔</div><div class="ov-desc">支持家長育兒</div></div>
+        <div class="ov-card fragment"><div class="ov-emoji">🌱</div><div class="ov-title">提升午餐品質</div><div class="ov-desc">強化食農教育與在地連結</div></div>
+      </div>
+    </section>
+
+    <!-- 9 補助標準 -->
+    <section data-background-color="#0d1117">
+      <h2>補助標準</h2>
+      <table class="rate-table">
+        <tr><th>項目</th><th style="text-align:right;">金額</th></tr>
+        <tr><td>每餐補助（公私立國中小齊一）</td><td class="amt">60 元</td></tr>
+        <tr><td>國產可溯源食材獎勵金（另計）</td><td class="amt">10–14 元</td></tr>
+        <tr><td>有機蔬菜／米（每人每餐）</td><td class="amt">4 元</td></tr>
+        <tr><td>產銷履歷蔬菜（每人每餐）</td><td class="amt">1.5 元</td></tr>
+      </table>
+    </section>
+
+    <!-- 10 供應條件 -->
+    <section data-background-color="#0d1117">
+      <h2>供應條件</h2>
+      <ul class="bullets">
+        <li>🥬 每週至少 <b>1 道有機蔬果</b>、至少 <b>1 次</b>採用臺中在地食材</li>
+        <li>🍎 每週至少供應 <b>1 次水果</b></li>
+        <li>🍽️ 每日午餐至少 <b>3 菜</b></li>
+        <li>🏫 設廚房學校：主副食支出<b>不得低於</b>午餐費總額 <b>70%</b></li>
+      </ul>
+    </section>
+
+    <!-- 11 食安五大把關 -->
+    <section data-background-color="#0d1117">
+      <h2>🛡️ 食安五大把關</h2>
+      <div class="guard-row">
+        <div class="guard-chip fragment"><span class="g-emoji">🥗</span>營養均衡</div>
+        <div class="guard-chip fragment"><span class="g-emoji">🔬</span>食材安心</div>
+        <div class="guard-chip fragment"><span class="g-emoji">🚜</span>在地優先</div>
+        <div class="guard-chip fragment"><span class="g-emoji">🔎</span>制度透明</div>
+        <div class="guard-chip fragment"><span class="g-emoji">✅</span>三章一Q</div>
+      </div>
+      <p style="font-size:0.42em;color:#888;text-align:center;margin-top:1.4em;">＋ 每日食材登錄平台主動揭露當日午餐內容</p>
+    </section>
+
+    <!-- 12 提案討論 -->
+    <section data-background-color="#0d1117">
+      <h2>六、提案討論</h2>
+      <div class="case-box">
+        <p style="margin:0 0 10px;"><span class="ck">案由：</span>本校及鐵山國小 <b>115 年暑假及 115 學年度第 1 學期例假日「清寒弱勢學生安心午餐券」補助案</b>，提請委員會審議。</p>
+        <p style="margin:0 0 6px;"><span class="ck">依據：</span>臺中市教育局 115/6/5 中市教體字第1150049325號函</p>
+        <p style="margin:0 0 6px;"><span class="ck">對象：</span>低收／中低收入戶、家庭突遭變故，或經學校查證確屬經濟困難且導師認定者</p>
+        <p style="margin:0;"><span class="ck">執行天數：</span>暑假（7/1–8/30）<b style="color:var(--accent)">61 天</b>　·　115-1 例假日（8/31–1/20）<b style="color:var(--accent)">46 天</b></p>
+      </div>
+    </section>
+
+    <!-- 13 審議表決 [INTERACT:poll] -->
+    <section id="slide-poll" data-background-color="#11161d">
+      <h2>🗳️ 提案審議表決 <span class="live-badge">LIVE</span></h2>
+      <p style="font-size:0.46em;color:#bbb;margin-bottom:0.4em;">安心午餐券補助案 —— 委員請以手機或電腦點選：</p>
+      <div id="poll-options" style="display:flex; flex-direction:column; gap:12px; margin-top:0.4em;"></div>
+      <div style="font-size:0.4em; color:#666; text-align:center; margin-top:0.8em;">已投票：<span id="poll-total">0</span> 人</div>
+    </section>
+
+    <!-- 14 散會 -->
+    <section data-background-color="#0d1117">
+      <div class="end-slide">
+        <div class="big">🍱</div>
+        <h1 style="color:var(--accent2);">七、散會</h1>
+        <p class="tagline">感謝各位委員與會　·　共同守護學童用餐權益</p>
+        <div class="sign-row">
+          <span>紀錄</span><span>單位主管</span><span>校長</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    backgroundTransition: 'fade',
+    center: true,
+    progress: true,
+    controls: true,
+    slideNumber: 'c/t',
+    plugins: []
+  });
+</script>
+
+<!-- 投票 Firebase -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
+  import { getFirestore, doc, setDoc, onSnapshot, serverTimestamp }
+    from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAYQhNavPSce17XtvDC5xnXyl9iUhW9KjA",
+    authDomain: "teacherstudy-109ef.firebaseapp.com",
+    projectId: "teacherstudy-109ef",
+    storageBucket: "teacherstudy-109ef.firebasestorage.app",
+    messagingSenderId: "196599230156",
+    appId: "1:196599230156:web:cfe55d364df3ae1b9d5c69"
+  };
+  const app = initializeApp(firebaseConfig);
+  const fdb = getFirestore(app);
+
+  const OPTIONS = [
+    { id: 'pass',   label: '✅ 照案通過' },
+    { id: 'amend',  label: '📝 修正後通過' },
+    { id: 'reject', label: '❌ 不通過' },
+  ];
+  const pollRef = doc(fdb, 'lunch1142_poll', 'results');
+
+  const userId = 'user_' + Math.random().toString(36).slice(2, 9);
+  let myVote = null;
+
+  const container = document.getElementById('poll-options');
+  OPTIONS.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.id = `poll-btn-${opt.id}`;
+    btn.innerHTML = `
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="flex:0 0 24px;height:24px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);
+                     display:flex;align-items:center;justify-content:center;font-size:12px;"
+              id="poll-check-${opt.id}"></span>
+        <span style="flex:1;text-align:left;">${opt.label}</span>
+        <span style="flex:0 0 140px;height:8px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
+          <div id="poll-bar-${opt.id}" style="height:100%;width:0;background:var(--accent2);border-radius:4px;transition:width 0.4s;"></div>
+        </span>
+        <span id="poll-pct-${opt.id}" style="flex:0 0 40px;text-align:right;font-size:0.8em;color:#888;">0%</span>
+      </div>`;
+    btn.style.cssText = `width:100%;padding:13px 16px;background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:#fff;
+      font-size:0.5em;cursor:pointer;font-family:inherit;text-align:left;`;
+    btn.onclick = () => vote(opt.id);
+    container.appendChild(btn);
+  });
+
+  async function vote(optId) {
+    myVote = optId;
+    const data = {};
+    data[`votes.${userId}`] = optId;
+    data.updated_at = serverTimestamp();
+    await setDoc(pollRef, data, { merge: true });
+  }
+
+  onSnapshot(pollRef, snap => {
+    const data = snap.data() || {};
+    const votes = data.votes || {};
+    const counts = {};
+    OPTIONS.forEach(o => counts[o.id] = 0);
+    Object.values(votes).forEach(v => { if (counts[v] !== undefined) counts[v]++; });
+    const total = Object.values(counts).reduce((a, b) => a + b, 0);
+
+    document.getElementById('poll-total').textContent = total;
+    OPTIONS.forEach(opt => {
+      const pct = total > 0 ? Math.round((counts[opt.id] / total) * 100) : 0;
+      document.getElementById(`poll-bar-${opt.id}`).style.width = pct + '%';
+      document.getElementById(`poll-pct-${opt.id}`).textContent = pct + '%';
+      const check = document.getElementById(`poll-check-${opt.id}`);
+      if (myVote === opt.id) {
+        check.textContent = '✓';
+        check.style.background = 'var(--accent2)';
+        check.style.borderColor = 'var(--accent2)';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

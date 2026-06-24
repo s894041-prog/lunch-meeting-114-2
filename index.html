@@ -256,9 +256,19 @@
     <!-- 13 審議表決 [INTERACT:poll] -->
     <section id="slide-poll" data-background-color="#11161d">
       <h2>🗳️ 提案審議表決 <span class="live-badge">LIVE</span></h2>
-      <p style="font-size:0.46em;color:#bbb;margin-bottom:0.4em;">安心午餐券補助案 —— 委員請以手機或電腦點選：</p>
-      <div id="poll-options" style="display:flex; flex-direction:column; gap:12px; margin-top:0.4em;"></div>
-      <div style="font-size:0.4em; color:#666; text-align:center; margin-top:0.8em;">已投票：<span id="poll-total">0</span> 人</div>
+      <p style="font-size:0.44em;color:#bbb;margin-bottom:0.5em;">安心午餐券補助案 —— 委員請以手機掃描 QR Code，或在本畫面直接點選：</p>
+      <div style="display:grid; grid-template-columns:1fr 200px; gap:24px; align-items:center;">
+        <div>
+          <div id="poll-options" style="display:flex; flex-direction:column; gap:12px;"></div>
+          <div style="font-size:0.4em; color:#666; margin-top:0.8em;">已投票：<span id="poll-total">0</span> 人</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="background:#fff; padding:12px; border-radius:12px; display:inline-block;">
+            <img src="images/poll-qr.png" alt="投票 QR Code" style="width:160px; height:160px; display:block;">
+          </div>
+          <div style="font-size:0.34em; color:var(--accent2); margin-top:10px; font-weight:700;">📱 掃描即可投票</div>
+        </div>
+      </div>
     </section>
 
     <!-- 14 散會 -->

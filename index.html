@@ -351,10 +351,21 @@
 
   async function vote(optId) {
     myVote = optId;
-    const data = {};
-    data[`votes.${userId}`] = optId;
-    data.updated_at = serverTimestamp();
-    await setDoc(pollRef, data, { merge: true });
+    // 立即視覺回饋（不等網路）
+    OPTIONS.forEach(opt => {
+      const check = document.getElementById(`poll-check-${opt.id}`);
+      const isMe = (opt.id === optId);
+      check.textContent = isMe ? '✓' : '';
+      check.style.background = isMe ? 'var(--accent2)' : 'transparent';
+      check.style.borderColor = isMe ? 'var(--accent2)' : 'rgba(255,255,255,0.3)';
+    });
+    try {
+      // 用真正的巢狀物件，merge:true 會深層合併 votes map（不會覆蓋他人）
+      await setDoc(pollRef, { votes: { [userId]: optId }, updated_at: serverTimestamp() }, { merge: true });
+    } catch (e) {
+      console.error('vote failed', e);
+      alert('投票送出失敗：' + (e?.message || e) + '\n請確認網路連線後再試。');
+    }
   }
 
   onSnapshot(pollRef, snap => {
